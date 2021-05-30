@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
+    <!-- Подключаем bootstrap-->
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
@@ -22,6 +23,7 @@
       </nav>
         <a class="btn btn-outline-primary" href="#">Войти</a>
       </div>
+     
       <div class="container">
         <div class="py-5 text-center">
           <h2>Чат программы</h2>
@@ -39,9 +41,12 @@
           <br />
       <input type="submit" value="Отправить" class="btn btn-danger" />
         </form>
+        <!-- Подключаем Socket.io -->
     <script src="/socket.io/socket.io.js"></script>
      <script>
+       // Включаем socket.io и отслеживаем все подключения
       const socket = io();
+      
       const messages = document.getElementById("messages");
       const form = document.getElementById("form");
       const input = document.getElementById("input");
@@ -66,6 +71,7 @@
       //адресовываю то что получено из сервера
         socket.on("chat message",  (data) => {
         const item = document.createElement("li");
+        localStorage.setItem('chat message', data.message )
         item.innerHTML = `<span>${data.name} </span> : ${data.message}`;
         messages.appendChild(item)
        
