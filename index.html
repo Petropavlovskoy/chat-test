@@ -28,7 +28,6 @@
         </div>
           <ul id="messages"></ul>
       <div class="col-6">
-
       <form id="form" action="">
           <div class="name">
 
@@ -40,9 +39,7 @@
           <br />
       <input type="submit" value="Отправить" class="btn btn-danger" />
         </form>
-
     <script src="/socket.io/socket.io.js"></script>
-          
      <script>
       const socket = io();
       const messages = document.getElementById("messages");
@@ -62,22 +59,18 @@
           socket.emit("chat message", {
             message: input.value,
             name: userName,
-              
           });
           input.value = "";
-         
-
-            }
+         }
       });
       //адресовываю то что получено из сервера
-      socket.on("chat message",  (data) => {
+        socket.on("chat message",  (data) => {
         const item = document.createElement("li");
-        item.innerHTML = `<span>${data.name}</span>: ${data.message}`;
+        item.innerHTML = `<span>${data.name} </span> : ${data.message}`;
         messages.appendChild(item)
        
         window.scrollTo(0, document.body.scrollHeight);
- 
-      });
+       });
     </script>
   </body>
 </html>
