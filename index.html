@@ -24,26 +24,25 @@
         <a class="btn btn-outline-primary" href="#">Войти</a>
       </div>
      
-      <div class="container">
+       <div class="container">
         <div class="py-5 text-center">
           <h2>Чат программы</h2>
         </div>
           <ul id="messages"></ul>
       <div class="col-6">
       <form id="form" action="">
-          <div class="name">
-
+          <div class="name">       
       <label for="message">Имя:</label>
           </div>
-
-      <input type="text" autocomplete="off" name="messages"
+      <input type="text" autocomplete="off" name="messages"                         
              id="input" placeholder="Введите сообщение"class="form-control" /> 
           <br />
       <input type="submit" value="Отправить" class="btn btn-danger" />
-        </form>
+        </form> 
         <!-- Подключаем Socket.io -->
     <script src="/socket.io/socket.io.js"></script>
      <script>
+
        // Включаем socket.io и отслеживаем все подключения
       const socket = io();
       
@@ -53,30 +52,40 @@
       const nameBlock = document.querySelector(".name");
       const userName = prompt("Ваше имя");
       nameBlock.innerHTML = `${userName}`;
-
-      localStorage.setItem('name', userName)
       
-            form.addEventListener("submit", (e) => {
-        e.preventDefault();
+        let nameArray = localStorage.getItem('name') ?
+      JSON.parse(localStorage.getItem('name')) : []     
+      localStorage.setItem('name', JSON.stringify(userName))
+      console.log(nameArray);
 
+        form.addEventListener("submit", (e) => {
+        e.preventDefault();
         if (input.value) {
-          //отправка данных на сервер
-          socket.emit("chat message", {
+
+        //отправка данных на сервер
+        socket.emit("chat message", {
             message: input.value,
             name: userName,
-          });
-          input.value = "";
-         }
-      });
-      //адресовываю то что получено из сервера
+        });
+            input.value = "";
+           }
+        });
+        
+        //адресовываю то что получено из сервера
         socket.on("chat message",  (data) => {
         const item = document.createElement("li");
-        localStorage.setItem('chat message', data.message )
-        item.innerHTML = `<span>${data.name} </span> : ${data.message}`;
+    
+        let messagArray =  localStorage.getItem('messages') ?
+      JSON.parse(localStorage.getItem('messages')) : []     
+      localStorage.setItem('messages', JSON.stringify(data.message))
+      console.log(messagArray);
+
+           item.innerHTML = `<span>${data.name} </span> : ${data.message}`;
         messages.appendChild(item)
        
         window.scrollTo(0, document.body.scrollHeight);
        });
+   
     </script>
   </body>
 </html>
